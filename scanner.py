@@ -4,11 +4,8 @@ def scan_port(host, port):
 
     # Create a TCP socket that communicates over IPv4. 
     tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
     tcp_socket.settimeout(1)
-
     result = tcp_socket.connect_ex((host, port))
-
     tcp_socket.close()
 
     if result == 0: 
@@ -24,6 +21,19 @@ def scan_ports(host, ports):
         else: 
             print(f"{port}: Closed")
 
-ports = [22, 80, 443, 8000, 9999]
+target_host = input("Enter target host: ")
+start_port = input("Enter the starting port: ")
+end_port = input("Enter the ending port: ")
 
-scan_ports("127.0.0.1", ports)
+
+try: 
+    start_port = int(start_port)
+    end_port = int(end_port)
+    if (start_port >= 1 and end_port >= start_port and end_port <= 65535):
+        ports = range(start_port, end_port + 1)
+        scan_ports(target_host, ports)
+    else: 
+        print("Error: please enter a valid port range")
+
+except ValueError: 
+    print("Error: ports must be integers.")
